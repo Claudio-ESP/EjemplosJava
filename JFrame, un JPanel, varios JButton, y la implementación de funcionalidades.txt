@@ -1,0 +1,125 @@
+Aquí tienes un ejercicio completo que utiliza la biblioteca `javax.swing` para crear una interfaz gráfica en Java. Este ejercicio incluye la creación de un `JFrame`, un `JPanel`, varios `JButton`, y la implementación de funcionalidades adicionales, como cambiar el color de fondo y mostrar mensajes.
+
+### Enunciado del Ejercicio
+
+**Objetivo:**
+Crear una aplicación de Java Swing que tenga las siguientes características:
+
+1. Muestre una ventana gráfica (`JFrame`) con un título.
+2. Dentro del `JFrame`, habrá un panel principal (`JPanel`) configurado con `BorderLayout`.
+3. El panel principal contendrá:
+   - Un botón "Cambiar color" en la parte norte que cambia el color de fondo del panel.
+   - Un botón "Mostrar mensaje" en la parte este que muestra un mensaje emergente (`JOptionPane`).
+   - Un botón "Restablecer" en la parte oeste que restablece el color de fondo del panel al color original.
+   - Un botón "Salir" en la parte sur que cierra la aplicación.
+4. Al hacer clic en cualquier lugar del panel, se dibujará un pequeño cuadrado de colores aleatorios en la posición del clic.
+
+### Código Java
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class MainClass {
+    public static void main(String[] args) {
+        new MyFrame();
+    }
+}
+
+class MyFrame extends JFrame implements ActionListener, MouseListener {
+    private JButton btnChangeColor, btnShowMessage, btnReset, btnExit;
+    private JPanel panel;
+    private Color originalColor;
+
+    public MyFrame() {
+        // Configuración del JFrame
+        setTitle("Aplicación de Ejemplo");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 400);
+        setLocationRelativeTo(null);
+
+        // Configuración del JPanel con BorderLayout
+        panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        originalColor = panel.getBackground();
+        panel.addMouseListener(this);
+
+        // Creación de los botones
+        btnChangeColor = new JButton("Cambiar color");
+        btnShowMessage = new JButton("Mostrar mensaje");
+        btnReset = new JButton("Restablecer");
+        btnExit = new JButton("Salir");
+
+        // Añadir ActionListeners a los botones
+        btnChangeColor.addActionListener(this);
+        btnShowMessage.addActionListener(this);
+        btnReset.addActionListener(this);
+        btnExit.addActionListener(this);
+
+        // Añadir los botones al panel
+        panel.add(btnChangeColor, BorderLayout.NORTH);
+        panel.add(btnShowMessage, BorderLayout.EAST);
+        panel.add(btnReset, BorderLayout.WEST);
+        panel.add(btnExit, BorderLayout.SOUTH);
+
+        // Añadir el panel al JFrame
+        getContentPane().add(panel);
+
+        // Hacer visible la ventana
+        setVisible(true);
+    }
+
+    // Método para manejar los eventos de acción
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnChangeColor) {
+            panel.setBackground(getRandomColor());
+        } else if (e.getSource() == btnShowMessage) {
+            JOptionPane.showMessageDialog(this, "¡Hola! Este es un mensaje.", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        } else if (e.getSource() == btnReset) {
+            panel.setBackground(originalColor);
+        } else if (e.getSource() == btnExit) {
+            System.exit(0);
+        }
+    }
+
+    // Método para obtener un color aleatorio
+    public Color getRandomColor() {
+        int R = (int) (Math.random() * 256);
+        int G = (int) (Math.random() * 256);
+        int B = (int) (Math.random() * 256);
+        return new Color(R, G, B);
+    }
+
+    // Métodos de MouseListener
+    public void mouseClicked(MouseEvent e) {
+        Graphics g = panel.getGraphics();
+        g.setColor(getRandomColor());
+        g.fillRect(e.getX() - 15, e.getY() - 15, 30, 30);
+    }
+
+    public void mouseEntered(MouseEvent e) { /* No se requiere implementación */ }
+
+    public void mouseExited(MouseEvent e) { /* No se requiere implementación */ }
+
+    public void mousePressed(MouseEvent e) { /* No se requiere implementación */ }
+
+    public void mouseReleased(MouseEvent e) { /* No se requiere implementación */ }
+}
+```
+
+### Instrucciones para Compilar y Ejecutar
+
+1. Abre tu editor de texto o IDE favorito y crea un nuevo proyecto.
+2. Crea dos archivos Java en el mismo directorio: `MainClass.java` y `MyFrame.java`.
+3. Copia y pega el contenido correspondiente en cada archivo.
+4. Compila los archivos utilizando `javac`:
+   ```sh
+   javac MainClass.java
+   ```
+5. Ejecuta la aplicación:
+   ```sh
+   java MainClass
+   ```
+
+Este código crea una ventana gráfica con los elementos y funcionalidades descritos. Puedes hacer clic en los botones para ver los cambios de color, mostrar mensajes, restablecer el color original y salir de la aplicación. Además, al hacer clic en el panel, se dibujarán pequeños cuadrados de colores aleatorios.
